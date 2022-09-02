@@ -106,12 +106,21 @@ def palindrome():
     """Find and retun the largest panindromic number made from the product
     of two 3-digit numbers.
     """
+
+    '''-1 definitely isn't the largest palindromic product of two 3-digit numbers,
+    and we know there is a palindromic product of two 3-digit numbers since the
+    question is asking for the largest one... so it's safe to initialize the max as -1.'''
     max = -1
+
+    # Start with the i as 999 and iterate down.
     for i in range(999, 100, -1):
+        # For each i, start with j at i and iterate down.
         for j in range(i, 100, -1):
             forward_int = i*j
             forward = str(i*j)
             backward = forward[::-1]
+
+            # Check if the int is a palindrome and is greater than the previous max.
             if forward == backward and forward_int > max:
                 max = forward_int
                 print(max, (i, j))
@@ -123,9 +132,11 @@ def alt_harmonic(n):
     harmonic series, which approximates ln(2).
     """
     
+    '''Define a generator that yields consecutive terms of the alternating harmonic series
+    starting with the first term and ending with the nth (the parameter of alt_harmonic).'''
     def n_terms(n):
         for i in range(1, n+1):
-            yield (-1)**(i+1)/i
+            yield (-1)**(i+1)/i # 1/1, -1/2, 1/3, ...
 
     return(sum(n_terms(n)))
 
