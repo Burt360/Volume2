@@ -6,7 +6,6 @@ Thurs. Sept. 15, 2022
 """
 
 import numpy as np
-import os
 
 def prob1():
     """Define the matrices A and B as arrays. Return the matrix product AB."""
@@ -113,7 +112,7 @@ def prob7():
     adjacent numbers in the same direction (up, down, left, right, or
     diagonally) in the grid. Use slicing, as specified in the manual.
     """
-    
+
     # Load the 20x20 grid.
     grid = np.load('grid.npy')
 
