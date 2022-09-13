@@ -1,0 +1,62 @@
+09/12/22 18:59
+
+Problem 1 (5 points):
+Score += 5
+
+Problem 2 (5 points):
+Score += 5
+
+Problem 3 (5 points):
+TypeError: Invalid return type 'dtype[float64]'
+
+Problem 4 (5 points):
+Score += 5
+
+Problem 5 (5 points):
+Score += 5
+
+Problem 6 (10 points):
+Score += 10
+
+Problem 7 (10 points):
+FileNotFoundError: [Errno 2] No such file or directory: 'grid.npy'
+
+Code Quality (5 points):
+Score += 5
+
+Total score: 35/50 = 70.0%
+
+-------------------------------------------------------------------------------
+
+09/12/22 19:07
+
+Problem 1 (5 points):
+Score += 5
+
+Problem 2 (5 points):
+Score += 5
+
+Problem 3 (5 points):
+TypeError: Invalid return type 'dtype[float64]'
+
+Problem 4 (5 points):
+Score += 5
+
+Problem 5 (5 points):
+Score += 5
+
+Problem 6 (10 points):
+Score += 10
+
+Problem 7 (10 points):
+Score += 10
+
+Code Quality (5 points):
+Score += 5
+
+Total score: 45/50 = 90.0%
+
+Great job!
+
+-------------------------------------------------------------------------------
+
