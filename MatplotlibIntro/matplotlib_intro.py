@@ -53,7 +53,7 @@ def prob2():
 
     # Plot f(x) over x for f as each of the given functions.
     pairs = ((np.sin, 'sin(x)'), (np.cos, 'cos(x)'), (np.arctan, 'arctan(x)'))
-    [plt.plot(x, f(x), label=name) for f, name in pairs]
+    [plt.plot(x, fn(x), label=name) for fn, name in pairs]
 
     plt.title('sin(x), cos(x), arctan(x)')
     plt.legend()
@@ -83,10 +83,13 @@ def prob3():
     # Set axis bounds.
     plt.xlim(-2, 6)
     plt.ylim(-6, 6)
+
+    plt.title('1/(x-1)')
+    plt.ylabel('y')
+    plt.xlabel('x')
     
     plt.show()
 
-# TODO from here down
 # Problem 4
 def prob4():
     """Plot the functions sin(x), sin(2x), 2sin(x), and 2sin(2x) on the
@@ -102,27 +105,46 @@ def prob4():
             2sin(2x): magenta dotted line.
     """
     x = np.linspace(0, 2 * np.pi, 50)
-    #f = lambda x: [np.sin(x), np.sin(2*x), 2*np.sin(x), 2*np.sin(2*x)]
+    fig, axes = plt.subplots(2, 2)
+
+    # Create plots and set titles.
+    axes[0][0].plot(x, np.sin(x), 'g-')
+    axes[0][0].set_title('sin(x)')
+
+    axes[0][1].plot(x, np.sin(2*x), 'r--')
+    axes[0][1].set_title('sin(2x)')
     
+    axes[1][0].plot(x, 2*np.sin(x), 'b--')
+    axes[1][0].set_title('2sin(x)')
+
+    axes[1][1].plot(x, 2*np.sin(2*x), 'm:')
+    axes[1][1].set_title('2sin(2x)')
+
+    # Set axis limits.
+    [axes[i][o].set_xlim(0, 2*np.pi) for i in range(2) for o in range(2)]
+    [axes[i][o].set_ylim(-2, 2) for i in range(2) for o in range(2)]
+
+    # Set axis labels.
+    [axes[i][o].set_xlabel('x') for i in range(2) for o in range(2)]
+    [axes[i][o].set_ylabel('y') for i in range(2) for o in range(2)]
+
+    fig.suptitle('Sine comparison')
+    
+    fig.tight_layout()
+    fig.show()
 
     return
-    '''I know this is complicated and not good coding style.
-    I just wanted to experiment with what I can do using Python's abilities.'''
+    '''Fun stuff with bad coding style below.'''
     #g = lambda x: [o * np.sin(i * x) for o in range(1, 3) for i in range(1, 3)]
     #h = lambda x: [[o * np.sin(i * x) for i in range(1, 3)] for o in range(1, 3)]
 
     f = lambda o, i: (o + 1) * np.sin((i + 1) * x)
-    fig, axes = plt.subplots(2, 2)
-    styles = (('g-', 'r--'), ('b--', 'm:'))
+    
 
     [axes[o][i].plot(x, f(o, i), styles[o][i]) for o in range(2) for i in range(2)]
     [(axes[o][i].set_xlim(0, 2*np.pi), axes[o][i].set_ylim(-2, 2)) for o in range(2) for i in range(2)]
 
     [axes[o][i].set_title(f'{"" if o == 0 else "2"}sin({"" if i == 0 else "2"}x)') for o in range(2) for i in range(2)]
-    fig.suptitle('Sine comparison')
-    
-    fig.tight_layout()
-    fig.show()
 
 
 # Problem 5
@@ -140,15 +162,21 @@ def prob5():
     
     fig, axes = plt.subplots(1, 2)
 
+    # Create map chart.
     axes[0].plot(data[:, 1], data[:, 2], 'k,')
     axes[0].set_aspect('equal')
     axes[0].set_xlabel('Latitude')
     axes[0].set_ylabel('Longitude')
+    axes[0].set_title('Locations of fatal accidents')
 
+    # Create histogram.
     axes[1].hist(data[:, 0], bins=np.arange(0, 25))
     axes[1].set_xlim(0, 24)
-    axes[1].set_xlabel('Time')
+    axes[1].set_xlabel('Hour of day')
+    axes[1].set_ylabel('Number of fatal accidents')
+    axes[1].set_title('Fatal accidents by hour of day')
 
+    fig.tight_layout()
     fig.show()
 
 
@@ -163,19 +191,37 @@ def prob6():
         3. Choose a non-default color scheme.
         4. Include a color scale bar for each subplot.
     """
+    # Create meshgrid.
     x = np.linspace(-2 * np.pi, 2 * np.pi, 100); y = x.copy()
     X, Y = np.meshgrid(x, y)
     Z = np.sin(X)*np.sin(Y) / (X*Y)
     
+    # Create heat map of g.
     plt.subplot(121)
     plt.pcolormesh(X, Y, Z, cmap='coolwarm')
     plt.colorbar()
+    plt.title('Heat map of g')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.xlim(-2*np.pi, 2*np.pi)
+    plt.ylim(-2*np.pi, 2*np.pi)
 
+    # Create contour map of g.
     plt.subplot(122)
     plt.contour(X, Y, Z, 10, cmap='coolwarm')
     plt.colorbar()
+    plt.title('Contour map of g')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.xlim(-2*np.pi, 2*np.pi)
+    plt.ylim(-2*np.pi, 2*np.pi)
 
+    plt.suptitle('g(x) = sin(x)sin(y)/xy')
+
+    plt.tight_layout()
     plt.show()
+
+### Additional material ###
 
 from matplotlib.animation import FuncAnimation
 def sine_animation():
