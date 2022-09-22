@@ -20,7 +20,7 @@ def divide(a, b):
 def smallest_factor(n):
     """Return the smallest prime factor of the positive integer n."""
     if n == 1: return 1
-    for i in range(2, int(n**.5)):
+    for i in range(2, int(n**.5) + 1):
         if n % i == 0: return i
     return n
 
@@ -93,10 +93,10 @@ class Fraction(object):
             return float(self) == other
 
     def __add__(self, other):
-        return Fraction(self.numer*other.numer + self.denom*other.denom,
+        return Fraction(self.numer*other.denom + other.numer*self.denom,
                                                         self.denom*other.denom)
     def __sub__(self, other):
-        return Fraction(self.numer*other.numer - self.denom*other.denom,
+        return Fraction(self.numer*other.denom - other.numer*self.denom,
                                                         self.denom*other.denom)
     def __mul__(self, other):
         return Fraction(self.numer*other.numer, self.denom*other.denom)
