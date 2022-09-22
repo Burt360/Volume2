@@ -35,10 +35,15 @@ def prob1():
     x = list(range(100, 1001, 100))
     result = np.array([var_of_means(n) for n in x])
 
+    # Create the plot.
     plt.plot(x, result)
+
+    # Add title and axis labels.
     plt.title('Variance of means of rows for nxn matrices')
     plt.ylabel('Variance of means of rows')
     plt.xlabel('n')
+
+    # Show the plot.
     plt.show()
 
 # Problem 2
@@ -55,11 +60,13 @@ def prob2():
     pairs = ((np.sin, 'sin(x)'), (np.cos, 'cos(x)'), (np.arctan, 'arctan(x)'))
     [plt.plot(x, fn(x), label=name) for fn, name in pairs]
 
+    # Add title, axis labels, and legend. 
     plt.title('sin(x), cos(x), arctan(x)')
     plt.legend()
     plt.ylabel('y')
     plt.xlabel('x')
 
+    # Show the plot.
     plt.show() 
 
 
@@ -84,10 +91,12 @@ def prob3():
     plt.xlim(-2, 6)
     plt.ylim(-6, 6)
 
+    # Add title and axis labels.
     plt.title('1/(x-1)')
     plt.ylabel('y')
     plt.xlabel('x')
     
+    # Show the plot.
     plt.show()
 
 # Problem 4
@@ -104,19 +113,26 @@ def prob4():
              2sin(x): blue dashed line.
             2sin(2x): magenta dotted line.
     """
+    # Create 50 points between 0 and 2PI.
     x = np.linspace(0, 2 * np.pi, 50)
+
+    # Create 4 subplots, arranged 2x2.
     fig, axes = plt.subplots(2, 2)
 
     # Create plots and set titles.
+    # sin(x)
     axes[0][0].plot(x, np.sin(x), 'g-')
     axes[0][0].set_title('sin(x)')
 
+    # sin(2x)
     axes[0][1].plot(x, np.sin(2*x), 'r--')
     axes[0][1].set_title('sin(2x)')
     
+    # 2sin(x)
     axes[1][0].plot(x, 2*np.sin(x), 'b--')
     axes[1][0].set_title('2sin(x)')
 
+    # 2sin(2x)
     axes[1][1].plot(x, 2*np.sin(2*x), 'm:')
     axes[1][1].set_title('2sin(2x)')
 
@@ -128,23 +144,12 @@ def prob4():
     [axes[i][o].set_xlabel('x') for i in range(2) for o in range(2)]
     [axes[i][o].set_ylabel('y') for i in range(2) for o in range(2)]
 
+    # Add title on the entire figure.
     fig.suptitle('Sine comparison')
     
+    # Adjust spacing and show the plot.
     fig.tight_layout()
-    fig.show()
-
-    return
-    '''Fun stuff with bad coding style below.'''
-    #g = lambda x: [o * np.sin(i * x) for o in range(1, 3) for i in range(1, 3)]
-    #h = lambda x: [[o * np.sin(i * x) for i in range(1, 3)] for o in range(1, 3)]
-
-    f = lambda o, i: (o + 1) * np.sin((i + 1) * x)
-    
-
-    [axes[o][i].plot(x, f(o, i), styles[o][i]) for o in range(2) for i in range(2)]
-    [(axes[o][i].set_xlim(0, 2*np.pi), axes[o][i].set_ylim(-2, 2)) for o in range(2) for i in range(2)]
-
-    [axes[o][i].set_title(f'{"" if o == 0 else "2"}sin({"" if i == 0 else "2"}x)') for o in range(2) for i in range(2)]
+    plt.show()
 
 
 # Problem 5
@@ -157,25 +162,27 @@ def prob5():
         2. A histogram of the hours of the day, with one bin per hour.
             Label and set the limits of the x-axis.
     """
+    # Load the data.
     data = np.load('FARS.npy')
     #print(data[:100,:])
-    
+    # Create 2 subplots, arranged 1x2.
     fig, axes = plt.subplots(1, 2)
 
-    # Create map chart.
+    # Create map chart with equal aspect ratio, title, and axis labels.
     axes[0].plot(data[:, 1], data[:, 2], 'k,')
     axes[0].set_aspect('equal')
     axes[0].set_xlabel('Latitude')
     axes[0].set_ylabel('Longitude')
     axes[0].set_title('Locations of fatal accidents')
 
-    # Create histogram.
+    # Create histogram with title and axis labels, and set axis limits.
     axes[1].hist(data[:, 0], bins=np.arange(0, 25))
     axes[1].set_xlim(0, 24)
     axes[1].set_xlabel('Hour of day')
     axes[1].set_ylabel('Number of fatal accidents')
     axes[1].set_title('Fatal accidents by hour of day')
 
+    # Adjust spacing and show the plot.
     fig.tight_layout()
     fig.show()
 
@@ -199,28 +206,47 @@ def prob6():
     # Create heat map of g.
     plt.subplot(121)
     plt.pcolormesh(X, Y, Z, cmap='coolwarm')
+
+    # Add colorbar, title, and axis labels.
     plt.colorbar()
     plt.title('Heat map of g')
     plt.xlabel('x')
     plt.ylabel('y')
+
+    # Set axis limits.
     plt.xlim(-2*np.pi, 2*np.pi)
     plt.ylim(-2*np.pi, 2*np.pi)
+
+    ########################################
 
     # Create contour map of g.
     plt.subplot(122)
     plt.contour(X, Y, Z, 10, cmap='coolwarm')
+
+    # Add colorbar, title, and axis labels.
     plt.colorbar()
     plt.title('Contour map of g')
     plt.xlabel('x')
     plt.ylabel('y')
+
+    # Set axis limits.
     plt.xlim(-2*np.pi, 2*np.pi)
     plt.ylim(-2*np.pi, 2*np.pi)
 
+    # Add title on the entire figure.
     plt.suptitle('g(x) = sin(x)sin(y)/xy')
 
+    # Adjust spacing and show the plot.
     plt.tight_layout()
     plt.show()
 
+
+
+
+
+
+
+"""
 ### Additional material ###
 
 from matplotlib.animation import FuncAnimation
@@ -301,3 +327,4 @@ def tangent_animation():
     plt.show()
 
 #tangent_animation()
+"""
