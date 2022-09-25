@@ -1,8 +1,8 @@
 # test_specs.py
 """Python Essentials: Unit Testing.
-<Name>
-<Class>
-<Date>
+Nathan Schill
+Section 3
+Thurs. Sept. 29, 2022
 """
 
 import specs
@@ -54,6 +54,7 @@ def test_month_length():
     assert t('February') == 28, 'Feb -> 28'
     assert t('February', True) == 29, 'Feb leap -> 29'
 
+    # Test all the other months.
     assert t('March') == 31, 'Mar -> 31'
     assert t('April') == 30, 'Apr -> 30'
     assert t('May') == 31, 'May -> 31'
@@ -65,6 +66,7 @@ def test_month_length():
     assert t('November') == 30, 'Nov -> 30'
     assert t('December') == 31, 'Dec -> 31'
 
+    # Test a non-month argument.
     assert t('not_a_month') == None, 'other -> None'
 
 # Problem 3: write a unit test for specs.operate().
@@ -199,6 +201,7 @@ def test_fraction_truediv(set_up_fractions):
     assert frac_2_1 / frac_1_2 == specs.Fraction(4, 1), '2 / 1/2 -> 4/1'
     assert frac_2_1 / frac_n2_3 == specs.Fraction(-3, 1), '2 / -2/3 -> -3/1'
 
+    # Test ZeroDivisionError.
     with pytest.raises(ZeroDivisionError) as excinfo:
         frac_0_1 = specs.Fraction(0, 1)
         frac_1_2 / frac_0_1
@@ -207,7 +210,7 @@ def test_fraction_truediv(set_up_fractions):
 
 # Problem 5: Write test cases for Set.
 def test_count_sets():
-    """Test various cases for specs_count_sets."""
+    """Test for specs_count_sets."""
 
     # Assign the function to a shorter variable name.
     t = specs.count_sets

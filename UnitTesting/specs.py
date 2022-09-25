@@ -1,9 +1,11 @@
 # specs.py
 """Python Essentials: Unit Testing.
-<Name>
-<Class>
-<Date>
+Nathan Schill
+Section 3
+Thurs. Sept. 29, 2022
 """
+
+import itertools
 
 def add(a, b):
     """Add two numbers."""
@@ -123,7 +125,15 @@ def count_sets(cards):
             - one or more cards does not have exactly 4 digits, or
             - one or more cards has a character other than 0, 1, or 2.
     """
-    raise NotImplementedError("Problem 6 Incomplete")
+    
+    # Get all the triples of cards.
+    triples = tuple(itertools.combinations(cards, 3))
+    
+    # Count all the triples which are sets (all the True values).
+    num_sets = sum(tuple(is_set(*triple) for triple in triples))
+
+    return num_sets
+    
 
 def is_set(a, b, c):
     """Determine if the cards a, b, and c constitute a set.
@@ -136,4 +146,13 @@ def is_set(a, b, c):
             and c are either the same or all different for i=1,2,3,4.
         False if a, b, and c do not form a set.
     """
-    raise NotImplementedError("Problem 6 Incomplete")
+
+    # Iterate through the four digits of the cards' strings.
+    for i in range(4):
+        # Check if the ith digits sum to 0 (all 0), 3 (all 1 or all different),
+        # or 6 (all 2). If any sum doesn't match 0, 3, or 6, this isn't a set.
+        if int(a[i]) + int(b[i]) + int(c[i]) not in (0, 3, 6):
+            return False
+    
+    # All of the digits summed to 0, 3, or 6, so this is a set.
+    return True
