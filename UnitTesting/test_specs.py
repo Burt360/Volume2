@@ -19,7 +19,7 @@ def test_divide():
     assert specs.divide(5,4) == 1.25, "float division"
     with pytest.raises(ZeroDivisionError) as excinfo:
         specs.divide(4, 0)
-        assert excinfo.value.args[0] == "second input cannot be zero"
+    assert excinfo.value.args[0] == "second input cannot be zero"
 
 
 # Problem 1: write a unit test for specs.smallest_factor(), then correct it.
@@ -81,10 +81,11 @@ def test_operate():
     # Test operator.
     with pytest.raises(TypeError) as excinfo:
         t(1, 1, 1)
-        assert excinfo.value.args[0] == 'oper must be a string'
+    assert excinfo.value.args[0] == 'oper must be a string'
+
     with pytest.raises(ValueError) as excinfo:
         t(1, 1, 'plus')
-        assert excinfo.value.args[0] == "oper must be one of '+', '/', '-', or '*'"
+    assert excinfo.value.args[0] == "oper must be one of '+', '/', '-', or '*'"
     
     # Test operands.
     assert t(1, 1, '+') == 2, '1 + 1'
@@ -95,7 +96,7 @@ def test_operate():
     # Test division by zero.
     with pytest.raises(ZeroDivisionError) as excinfo:
         t(1, 0, '/')
-        assert excinfo.value.args[0] == 'division by zero is undefined'
+    assert excinfo.value.args[0] == 'division by zero is undefined'
     
 
 # Problem 4: write unit tests for specs.Fraction, then correct it.
@@ -127,13 +128,15 @@ def test_fraction_init(set_up_fractions):
     # Test that __init__ raises the correct errors.
     with pytest.raises(ZeroDivisionError) as excinfo:
         frac_1_0 = frac(1, 0)
-        assert excinfo.value.args[0] == 'denominator cannot be zero'
+    assert excinfo.value.args[0] == 'denominator cannot be zero'
+
     with pytest.raises(TypeError) as excinfo:
         frac_float_1 = frac(0.5, 1)
-        assert excinfo.value.args[0] == 'numerator and denominator must be integers'
+    assert excinfo.value.args[0] == 'numerator and denominator must be integers'
+
     with pytest.raises(TypeError) as excinfo:
         frac_1_float = frac(1, 0.5)
-        assert excinfo.value.args[0] == 'numerator and denominator must be integers'
+    assert excinfo.value.args[0] == 'numerator and denominator must be integers'
 
 def test_fraction_str(set_up_fractions):
     """Test various cases for specs.Fraction.__str__."""
@@ -205,7 +208,7 @@ def test_fraction_truediv(set_up_fractions):
     with pytest.raises(ZeroDivisionError) as excinfo:
         frac_0_1 = specs.Fraction(0, 1)
         frac_1_2 / frac_0_1
-        assert excinfo.value.args[0] == 'cannot divide by zero'
+    assert excinfo.value.args[0] == 'cannot divide by zero'
 
 
 # Problem 5: Write test cases for Set.
@@ -218,8 +221,32 @@ def test_count_sets():
     hand1 = ['1022', '1122', '0100', '2021',
              '0010', '2201', '2111', '0020',
              '1102', '0210', '2110', '1020']
-             
+
+    ### Test ValueErrors. The error messages give the errors being tested
+    ### and are thus the comments for this section.
+    with pytest.raises(ValueError) as excinfo:
+        hand_11_cards = hand1[:11]
+        t(hand_11_cards)
+    assert excinfo.value.args[0] == 'there are not exactly 12 cards'
+
+    with pytest.raises(ValueError) as excinfo:
+        hand_non_unique = hand1[:11] + ['1022']
+        t(hand_non_unique)
+    assert excinfo.value.args[0] == 'the cards are not all unique'
+
+    with pytest.raises(ValueError) as excinfo:
+        hand_not_four_digits = hand1[:11] + ['10220']
+        t(hand_not_four_digits)
+    assert excinfo.value.args[0] == 'not all cards have exactly 4 digits'
+
+    with pytest.raises(ValueError) as excinfo:
+        hand_digits_not_012 = hand1[:11] + ['1023']
+        t(hand_digits_not_012)
+    assert excinfo.value.args[0] == 'card(s) have digits besides 0, 1, and 2'
+
+    # Test a hand of 6 sets.
     assert t(hand1) == 6, 'hand with 6 sets'
+    
 
 def test_is_set():
     """Test various cases for specs_count_sets."""

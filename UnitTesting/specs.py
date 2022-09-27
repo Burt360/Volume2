@@ -126,6 +126,25 @@ def count_sets(cards):
             - one or more cards has a character other than 0, 1, or 2.
     """
     
+    # Test if there are exactly 12 cards.
+    if len(cards) != 12:
+        raise ValueError('there are not exactly 12 cards')
+    
+    # Test if all the cards are unique (no duplicates),
+    # assuming there are 12 cards total (tested above).
+    if len(set(cards)) != 12:
+        raise ValueError('the cards are not all unique')
+    
+    # Test if all cards have exactly four digits.
+    if list(map(len, cards)) != [4]*12:
+        raise ValueError('not all cards have exactly 4 digits')
+
+    # Test if all cards contain only digits from 0, 1, and 2.
+    for card in cards:
+        for c in card:
+            if c not in ('0', '1', '2'):
+                raise ValueError('card(s) have digits besides 0, 1, and 2')    
+    
     # Get all the triples of cards.
     triples = tuple(itertools.combinations(cards, 3))
     
