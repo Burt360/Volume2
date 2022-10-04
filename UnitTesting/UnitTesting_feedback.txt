@@ -25,3 +25,26 @@ Great job!
 
 -------------------------------------------------------------------------------
 
+09/29/22 09:14
+
+Problem 1 (5 points):
+Score += 5
+
+Problem 4 (10 points):
+Score += 10
+
+Problem 6 (10 points):
+Score += 10
+
+Coverage (20 points):
+Score += 20
+
+Code Quality (5 points):
+Score += 5
+
+Total score: 50/50 = 100.0%
+
+Excellent!
+
+-------------------------------------------------------------------------------
+
