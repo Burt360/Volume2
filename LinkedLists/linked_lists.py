@@ -264,8 +264,8 @@ class LinkedList:
 
         if index < 0 or index > self.length:
             # If the index is negative or greater than the length of the list,
-            # raise a ValueError.
-            raise ValueError('index should be positive and less than or equal to the length of the list')
+            # raise a IndexError.
+            raise IndexError('index should be positive and less than or equal to the length of the list')
         
         if index == self.length:
             # If the index is the length of the list, append the new node.
