@@ -5,6 +5,9 @@ Sec. 3
 Thurs. Oct. 13, 2022
 """
 
+import random as rd
+from time import perf_counter as pc
+
 # These imports are used in BST.draw().
 from matplotlib import pyplot as plt
 import networkx as nx
@@ -491,12 +494,95 @@ def prob4():
     structure. Plot the number of elements in the structure versus the build
     and search times. Use log scales where appropriate.
     """
-    # random.shuffle to avoid collisions -> ValueErrors
+    def run(n):
+        """Inserts n items and finds 5 items for each tree,
+        and appends the time to do so for each tree
+        to lists in insert_times and find_times."""
+
+        # Use the same n random items to insert and 5 to find for each tree
+        insert_items = rd.sample(words, n)
+        find_items = rd.sample(insert_items, 5)      
+
+        # A dictionary for the trees
+        trees = {
+            'LinkedList' : SinglyLinkedList(),
+            'BST' : BST(),
+            'AVL' : AVL()
+        }
+
+        for name, tree in trees.items():
+            # Use the correct insert/find method depending on the tree
+            if name == 'LinkedList':
+                add = tree.append
+                find = tree.iterative_find
+            else:
+                add = tree.insert
+                find = tree.find
+
+            # Time inserting n items
+            start = pc()
+            for item in insert_items:
+                add(item)
+            end = pc()
+            insert_times[name].append(end - start)
+
+            # Time finding 5 items
+            start = pc()
+            for item in find_items:
+                find(item)
+            end = pc()
+            find_times[name].append(end - start)
     
+    # Store each word (one from each line) in a list
     FILEPATH = 'english.txt'
     with open(FILEPATH, 'r') as file:
         words = [line.strip() for line in file.readlines()]
     
+    # Value of n to time
+    N = tuple(2**i for i in range(3, 10 + 1))
+
+    # Lists of times to insert n items for each tree
+    insert_times = {
+            'LinkedList' : list(),
+            'BST' : list(),
+            'AVL' : list()
+        }
+
+    # Lists of times to find 5 items for each tree
+    find_times = {
+            'LinkedList' : list(),
+            'BST' : list(),
+            'AVL' : list()
+        }
+
+    # Get times for each n.
+    for n in N:
+        run(n)
     
+    ### Insert times subplot
+    sub = plt.subplot(121)
+    for tree, times in insert_times.items():
+        sub.loglog(N, times, label=tree)
+    
+    # Legend, labels, title
+    sub.legend()
+    sub.set_xlabel('n')
+    sub.set_ylabel('time (seconds)')
+    sub.set_title('Time to insert n random items')
+
+    ### Find times subplot
+    sub = plt.subplot(122)
+    for tree, times in find_times.items():
+        sub.loglog(N, times, label=tree)
+    
+    # Legend, labels, title
+    sub.legend()
+    sub.set_xlabel('n')
+    sub.set_title('Time to find random 5 items')
+    
+    # Set x-axis base 2, title plot, and show
+    plt.xscale('log', base=2)
+    plt.suptitle('Comparison of linked list, BST, and AVL')
+    plt.show()
 
 prob4()
