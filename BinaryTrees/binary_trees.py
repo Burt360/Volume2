@@ -584,5 +584,3 @@ def prob4():
     plt.xscale('log', base=2)
     plt.suptitle('Comparison of linked list, BST, and AVL')
     plt.show()
-
-prob4()
