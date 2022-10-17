@@ -244,7 +244,7 @@ class BST:
             self.remove(pred_val)
 
             # Replace the value of the target with the value of the in-order predecessor.
-            self.root.value = pred_val
+            target.value = pred_val
         
         # If the target has one child (it has at least one because
         # it's not the case that both are None and
