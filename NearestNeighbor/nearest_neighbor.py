@@ -7,8 +7,8 @@ Thurs. Oct. 27
 
 import numpy as np
 from scipy import linalg as la
-
-#from sklearn.neighbors import KNeighborsClassifier as KNC
+from scipy.spatial import KDTree
+import scipy.stats
 
 
 # Problem 1
@@ -180,6 +180,7 @@ class KDT:
             (float) The Euclidean distance from the nearest neighbor to z.
         """
         
+        # If the tree is emtpy, raise an error
         if self.root is None:
             raise ValueError('tree is empty')
 
@@ -240,7 +241,37 @@ class KNeighborsClassifier:
     the nearest neighbor problem efficiently.
     """
 
+    def __init__(self, n_neighbors):
+        """Set the number of neighbors to use when classifying."""
+        self.n_neighbors = n_neighbors
     
+    def fit(self, data, labels):
+        """Load a KDTree with the data, and save the labels.
+        
+        Params:
+            data ((m,k) ndarray): the training set (each row is a point in R^k)
+            labels ((m,) ndarray): the labels (the ith entry corresponds to the ith row in data)
+        """
+        # Init tree and labels attributes
+        self.tree = KDTree(data)
+        self.labels = labels
+    
+    def predict(self, z):
+        """Get the most likely label of z by querying the nearest neighbors.
+        
+        Params:
+            z ((k,) ndarray): the vector in R^k to classify
+        """
+        # Get the indices of the nearest neighbors to z
+        distances, indices = self.tree.query(z, k=self.n_neighbors)
+
+        # Get the labels corresponding to the nearest neighbors
+        labels = tuple(self.labels[i] for i in indices)
+
+        # Return the most common label,
+        # choosing the alphanumerically smallest label in the case of a tie
+        return scipy.stats.mode(labels).mode[0]
+
 
 # Problem 6
 def prob6(n_neighbors, filename="mnist_subset.npz"):
@@ -257,4 +288,23 @@ def prob6(n_neighbors, filename="mnist_subset.npz"):
     Returns:
         (float): the classification accuracy.
     """
-    raise NotImplementedError("Problem 6 Incomplete")
+
+    # Load the data and get the training and testing data and labels
+    DATA = np.load("mnist_subset.npz")
+    X_train = DATA["X_train"].astype(float) # Training data
+    y_train = DATA["y_train"]               # Training labels
+    X_test = DATA["X_test"].astype(float)   # Test data
+    y_test = DATA["y_test"]
+    
+    # Init KNeighborsClassifier with n_neighbors and fit the data
+    classifier = KNeighborsClassifier(n_neighbors)
+    classifier.fit(X_train, y_train)
+
+    # Get the predictions for each z in X_test
+    predictions = tuple(classifier.predict(z) for z in X_test)
+
+    # Compare the predictions with the correct labels in y_test
+    results = tuple(predictions == y_test)
+    
+    # Return the percentage of correct predictions in results
+    return results.count(True)/len(results)
