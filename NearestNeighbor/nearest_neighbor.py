@@ -264,9 +264,14 @@ class KNeighborsClassifier:
         """
         # Get the indices of the nearest neighbors to z
         distances, indices = self.tree.query(z, k=self.n_neighbors)
-
-        # Get the labels corresponding to the nearest neighbors
-        labels = tuple(self.labels[i] for i in indices)
+        
+        if type(indices) is np.int64:
+            # If indices consists of just one index:
+            labels = self.labels[indices]
+        else:
+            # If indices consists of several indices
+            # Get the labels corresponding to the nearest neighbors
+            labels = tuple(self.labels[i] for i in indices)
 
         # Return the most common label,
         # choosing the alphanumerically smallest label in the case of a tie
@@ -290,7 +295,7 @@ def prob6(n_neighbors, filename="mnist_subset.npz"):
     """
 
     # Load the data and get the training and testing data and labels
-    DATA = np.load("mnist_subset.npz")
+    DATA = np.load(filename)
     X_train = DATA["X_train"].astype(float) # Training data
     y_train = DATA["y_train"]               # Training labels
     X_test = DATA["X_test"].astype(float)   # Test data
@@ -305,6 +310,6 @@ def prob6(n_neighbors, filename="mnist_subset.npz"):
 
     # Compare the predictions with the correct labels in y_test
     results = tuple(predictions == y_test)
-    
+
     # Return the percentage of correct predictions in results
     return results.count(True)/len(results)
