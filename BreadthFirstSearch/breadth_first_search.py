@@ -1,10 +1,14 @@
 # breadth_first_search.py
 """Volume 2: Breadth-First Search.
-<Name>
-<Class>
-<Date>
+Nathan Schill
+Section 3
+Thurs. Nov. 3, 2022
 """
 
+from collections import deque
+import networkx as nx
+from matplotlib import pyplot as plt
+import statistics as stats
 
 # Problems 1-3
 class Graph:
@@ -31,7 +35,9 @@ class Graph:
         Parameters:
             n: the label for the new node.
         """
-        raise NotImplementedError("Problem 1 Incomplete")
+        # Add a node with an empty list of edges if the node is not alrady in the graph
+        if n not in self.d:
+            self.d[n] = set()
 
     # Problem 1
     def add_edge(self, u, v):
@@ -42,7 +48,13 @@ class Graph:
             u: a node label.
             v: a node label.
         """
-        raise NotImplementedError("Problem 1 Incomplete")
+        # Add the nodes if needed
+        self.add_node(u)
+        self.add_node(v)
+        
+        # For each node, add the edge to the other
+        self.d[u].add(v)
+        self.d[v].add(u)
 
     # Problem 1
     def remove_node(self, n):
@@ -54,7 +66,16 @@ class Graph:
         Raises:
             KeyError: if n is not in the graph.
         """
-        raise NotImplementedError("Problem 1 Incomplete")
+        # Raise an error if the node is not in the graph
+        if n not in self.d:
+            raise KeyError('n is not in the graph')
+        
+        # For each neighbor of n, discard the edge from that neighbor to n
+        for u in self.d[n]:
+            self.d[u].discard(n)
+
+        # Remove n
+        self.d.pop(n)
 
     # Problem 1
     def remove_edge(self, u, v):
@@ -68,7 +89,18 @@ class Graph:
             KeyError: if u or v are not in the graph, or if there is no
                 edge between u and v.
         """
-        raise NotImplementedError("Problem 1 Incomplete")
+        # Raise an error if u or v are not in the graph or if there is no edge between them
+        if u not in self.d:
+            raise KeyError('u is not in the graph')
+        if v not in self.d:
+            raise KeyError('v is not in the graph')
+        if v not in self.d[u]:
+            # Should not need to check if u is in self.d[v] since graph is undirected
+            raise KeyError('there is not an edge between u and v')
+        
+        # Remove both nodes
+        self.d[u].remove(v)
+        self.d[v].remove(u)
 
     # Problem 2
     def traverse(self, source):
@@ -85,7 +117,31 @@ class Graph:
         Raises:
             KeyError: if the source node is not in the graph.
         """
-        raise NotImplementedError("Problem 2 Incomplete")
+        
+        # Raise a KeyError if the source node is not in the graph
+        if source not in self.d:
+            raise KeyError('source node is not in the graph')
+        
+        # Init data structures for BFS with source added to Q and M
+        V = list()
+        Q = deque(source)
+        M = set(source)
+
+        # While Q is not empty
+        while Q:
+            # Pop the next node in Q and "visit" it by appending it to V
+            current = Q.popleft()
+            V.append(current)
+
+            # For each neighbor u of current not already in M
+            for u in self.d[current] - M:
+                # Push u onto Q and add u to M
+                Q.append(u)
+                M.add(u)
+        
+        # Return the list of nodes in visitation order
+        return V
+    
 
     # Problem 3
     def shortest_path(self, source, target):
@@ -104,7 +160,45 @@ class Graph:
         Raises:
             KeyError: if the source or target nodes are not in the graph.
         """
-        raise NotImplementedError("Problem 3 Incomplete")
+        
+        # Raise a KeyError if either input node is not in the graph
+        if source not in self.d:
+            raise KeyError('source node is not in the graph')
+        if target not in self.d:
+            raise KeyError('target node is not in the graph')
+        
+        # Init data structures for BFS with source added to Q and M
+        Q = deque(source)
+        M = {source : None}
+
+        # While Q is not empty
+        while Q:
+            # Pop the next node in Q
+            current = Q.popleft()
+
+            # For each neighbor u of current not already in M
+            for u in self.d[current] - set(M):
+                # Push u onto Q
+                Q.append(u)
+
+                # Add u to M mapping to the visiting node current
+                M[u] = current
+            
+            # If the target has been found, break
+            if target in M:
+                break
+        
+        # Init a deque to store the shortest path from source to target, and x as the target
+        V = deque()
+        x = target
+        # While x is not None, it is the next node in the reversed shortest path from target to source,
+        # so appendleft it to V and set x as the next node in the path
+        while x is not None:
+            V.appendleft(x)
+            x = M[x]
+
+        # Return the list of nodes in the shortest path from source to target
+        return list(V)
 
 
 # Problems 4-6
@@ -128,7 +222,27 @@ class MovieGraph:
         Any '/' characters in movie titles have been replaced with the
         vertical pipe character | (for example, Frost|Nixon (2008)).
         """
-        raise NotImplementedError("Problem 4 Incomplete")
+        
+        # Init Graph and sets for movie titles and actor names
+        self.G = nx.Graph()
+        self.movie_titles = set()
+        self.actor_names = set()
+
+        # Open the file
+        with open(filename, 'r', encoding='utf8') as file:
+            # Read each line and split it by '/'
+            for line in file:
+                L = line.split('/')
+
+                # The first string is the movie
+                self.movie_titles.add(L[0].strip())
+
+                # The remaining strings are actors
+                # Add an edge between the movie and each actor
+                for actor_name in L[1:]:
+                    self.actor_names.add(actor_name.strip())
+                    self.G.add_edge(L[0], actor_name.strip())
+                
 
     # Problem 5
     def path_to_actor(self, source, target):
@@ -139,7 +253,14 @@ class MovieGraph:
             (list): a shortest path from source to target, including endpoints and movies.
             (int): the number of steps from source to target, excluding movies.
         """
-        raise NotImplementedError("Problem 5 Incomplete")
+        # Get the shortest path between source and target
+        path = nx.shortest_path(self.G, source, target)
+
+        # The degree of separation is (path's length - 1)/2
+        # (E.g., path length 5 contains 3 actors and 2 movies, so the degree is 2)
+        deg = int((len(path)-1)/2)
+
+        return path, deg 
 
     # Problem 6
     def average_number(self, target):
@@ -150,4 +271,16 @@ class MovieGraph:
         Returns:
             (float): the average path length from actor to target.
         """
-        raise NotImplementedError("Problem 6 Incomplete")
+        
+        # Get the path lengths
+        path_lengths = nx.shortest_path_length(self.G, target)
+
+        # Get the degrees of separation for each actor
+        degrees = [int((length)/2) for node, length in path_lengths.items() if node not in self.movie_titles]
+
+        # Plot the histogram
+        plt.hist(degrees, bins=[i-.5 for i in range(8)])
+        plt.show()
+        
+        # Return the average degrees of separation
+        return stats.mean(degrees)
