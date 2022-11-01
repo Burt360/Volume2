@@ -1,0 +1,30 @@
+11/01/22 10:14
+
+Problem 1 (5 points):
+Score += 5
+
+Problem 2 (10 points):
+Graph.traverse('A') failed
+	Graph: {'A': {'B', 'C'}, 'B': {'E', 'A', 'D'}, 'C': {'F', 'A', 'G'}, 'D': {'B', 'I', 'H'}, 'E': {'J', 'B', 'K'}, 'F': {'M', 'C', 'L'}, 'G': {'O', 'C', 'N'}, 'H': {'D'}, 'I': {'D'}, 'J': {'E'}, 'K': {'E'}, 'L': {'F'}, 'M': {'F'}, 'N': {'G'}, 'O': {'G'}}
+	Correct response: "['A', 'B', 'C', 'E', 'D', 'F', 'G', 'J', 'K', 'I', 'H', 'M', 'L', 'O', 'N']"
+	Student response: "['A', 'B', 'C', 'E', 'D', 'F', 'G', 'J', 'K', 'H', 'I', 'M', 'L', 'O', 'N']"
+Score += 8
+
+Problem 3 (10 points):
+Score += 10
+
+Problem 5 (10 points):
+Score += 10
+
+Problem 6 (10 points):
+Score += 10
+
+Code Quality (5 points):
+Score += 5
+
+Total score: 48/50 = 96.0%
+
+Great job!
+
+-------------------------------------------------------------------------------
+
