@@ -1,8 +1,8 @@
 # markov_chains.py
 """Volume 2: Markov Chains.
-<Name>
-<Class>
-<Date>
+Nathan Schill
+Sec. 3
+Thurs. Nov. 10, 2022
 """
 
 import numpy as np
@@ -39,7 +39,30 @@ class MarkovChain:
                             to B [   .5      .2   ]
         and the label-to-index dictionary is {"A":0, "B":1}.
         """
-        raise NotImplementedError("Problem 1 Incomplete")
+        
+        # Check if A is not square
+        if A.shape[0] != A.shape[1]:
+            raise ValueError('matrix not square')
+        
+        # Check if A is not column stochastic
+        if not np.allclose(A.sum(axis=0), np.ones(A.shape[1])):
+            raise ValueError('matrix not column stochastic')
+        
+        # Store A
+        self.m = A
+
+        self.labelmap = dict()
+        if states is not None:
+            # If given state labels, store them and create the label-to-index dict
+            self.labels = states
+            for i, label in enumerate(states):
+                self.labelmap[label] = i
+        else:
+            # Otherwise, store labels 0, ..., n-1 and create the label-to-index dict
+            self.labels = [i for i in range(A.shape[0])]
+            for i in self.labels:
+                self.labelmap[i] = i
+
 
     # Problem 2
     def transition(self, state):
@@ -52,7 +75,16 @@ class MarkovChain:
         Returns:
             (str): the label of the state to transitioned to.
         """
-        raise NotImplementedError("Problem 2 Incomplete")
+        
+        # Get index of given state
+        in_index = self.labelmap[state]
+
+        # Get index of state transitioned to
+        out_index = np.argmax(np.random.multinomial(1, self.m[:, in_index]))
+
+        # Return state transitioned to
+        return self.labels[out_index]
+
 
     # Problem 3
     def walk(self, start, N):
@@ -66,7 +98,19 @@ class MarkovChain:
         Returns:
             (list(str)): A list of N state labels, including start.
         """
-        raise NotImplementedError("Problem 3 Incomplete")
+
+        # Raise a ValueError if start is not a valid state
+        if start not in self.labelmap:
+            raise ValueError('start not a valid label')
+
+        # Init walk with start state
+        walk = [start]
+
+        # Transition N-1 times
+        for i in range(N-1):
+            walk.append(self.transition(walk[-1]))
+
+        return walk
 
     # Problem 3
     def path(self, start, stop):
@@ -80,7 +124,20 @@ class MarkovChain:
         Returns:
             (list(str)): A list of state labels from start to stop.
         """
-        raise NotImplementedError("Problem 3 Incomplete")
+        
+        # Raise a ValueError if either start or stop is not a valid state
+        if start not in self.labelmap or stop not in self.labelmap:
+            raise ValueError('start or stop not a valid label')
+
+        # Init path with start state
+        path = [start]
+
+        # Transition until reaching stop state
+        while path[-1] != stop:
+            path.append(self.transition(path[-1]))
+
+        return path
+
 
     # Problem 4
     def steady_state(self, tol=1e-12, maxiter=40):
