@@ -16,7 +16,7 @@ class MarkovChain:
         (fill this out)
     """
     # Problem 1
-    def __init__(self, A, states=None):
+    def __init__(self, A, states=None, check_col_stochastic=True):
         """Check that A is column stochastic and construct a dictionary
         mapping a state's label to its index (the row / column of A that the
         state corresponds to). Save the transition matrix, the list of state
@@ -45,7 +45,7 @@ class MarkovChain:
             raise ValueError('matrix not square')
         
         # Check if A is not column stochastic
-        if not np.allclose(A.sum(axis=0), np.ones(A.shape[1])):
+        if check_col_stochastic and not np.allclose(A.sum(axis=0), np.ones(A.shape[1])):
             raise ValueError('matrix not column stochastic')
         
         # Store A
@@ -55,14 +55,15 @@ class MarkovChain:
         if states is not None:
             # If given state labels, store them and create the label-to-index dict
             self.labels = states
-            for i, label in enumerate(states):
+            #print(self.labels)
+            for i, label in enumerate(self.labels):
                 self.labelmap[label] = i
         else:
             # Otherwise, store labels 0, ..., n-1 and create the label-to-index dict
             self.labels = [i for i in range(A.shape[0])]
             for i in self.labels:
                 self.labelmap[i] = i
-
+    
 
     # Problem 2
     def transition(self, state):
@@ -153,13 +154,30 @@ class MarkovChain:
         Raises:
             ValueError: if there is no convergence within maxiter iterations.
         """
-        raise NotImplementedError("Problem 4 Incomplete")
+        
+        # Set x_0 as a random state distribution vector
+        size = self.m.shape[0]
+        x_prev = np.random.random(size)
+        x_prev /= x_prev.sum()
+        
+        # Compute x_{k+1} a maximum of maxiter times,
+        # breaking if norm(x_{k+1} - k_k) < tol
+        for i in range(maxiter):
+            x_next = self.m@x_prev
+            
+            if np.linalg.norm(x_next - x_prev) < tol:
+                return x_next
+            else:
+                x_prev = x_next
+        
+        # If the loop finishes without breaking, maxiter was exceeded
+        raise ValueError(f'A**k did not converge with maxiter = {maxiter} iterations')
 
 class SentenceGenerator(MarkovChain):
     """A Markov-based simulator for natural language.
 
     Attributes:
-        (fill this out)
+        Inherits from MarkovChain
     """
     # Problem 5
     def __init__(self, filename):
@@ -167,7 +185,42 @@ class SentenceGenerator(MarkovChain):
         contents. You may assume that the file has one complete sentence
         written on each line.
         """
-        raise NotImplementedError("Problem 5 Incomplete")
+
+        unique_words = set()
+
+        with open(filename, 'r') as file:
+            # Get set of unique words:
+            s = file.read()
+            [unique_words.add(word) for word in s.split()]
+            
+            # Init square array of zeros with size as the number of unique words + 2 (for $tart and $top)
+            A = np.zeros((len(unique_words) + 2, len(unique_words) + 2))
+
+            # Call super constructor
+            super().__init__(A, ['$tart'] + list(unique_words) + ['$top'], check_col_stochastic=False)
+            
+            # Reset the file position to the beginning
+            file.seek(0)
+            for line in file:
+                sentence_words_list = ['$tart'] + line.split() + ['$top']
+                
+                for second_word_i in range(1, len(sentence_words_list)):
+                    # Get the first and second word and the indices in the
+                    # transition matrix corresponding to each
+                    first = sentence_words_list[second_word_i - 1]
+                    first_i = self.labelmap[first]
+                    second = sentence_words_list[second_word_i]
+                    second_i = self.labelmap[second]
+
+                    # Increment the transition matrix entry transitioning from first_i to second_i
+                    self.m[second_i, first_i] += 1
+            
+            # Make the stop state transition to itself
+            self.m[-1, -1] = 1
+
+            # Normalize each column
+            self.m /= self.m.sum(axis=0)         
+
 
     # Problem 6
     def babble(self):
@@ -182,4 +235,6 @@ class SentenceGenerator(MarkovChain):
             >>> print(yoda.babble())
             The dark side of loss is a path as one with you.
         """
-        raise NotImplementedError("Problem 6 Incomplete")
+        
+        # Return a random path, excluding $tart and $top, and joined into a string by spaces
+        return ' '.join(self.path('$tart', '$top')[1:-1])
