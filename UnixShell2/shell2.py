@@ -1,9 +1,12 @@
 # shell2.py
 """Volume 3: Unix Shell 2.
-<Name>
-<Class>
-<Date>
+Nathan Schill
+Section 3
+Thurs. Nov. 17, 2022
 """
+
+from glob import glob
+import subprocess
 
 
 # Problem 3
@@ -21,7 +24,23 @@ def grep(target_string, file_pattern):
         matched_files (list): list of the filenames that matched the file
                pattern AND the target string.
     """
-    raise NotImplementedError("Problem 3 Incomplete")
+    
+    # Get the list of filenames that match file_pattern
+    filename_matches = glob(f'**/{file_pattern}', recursive=True)
+
+    # Get a list of 0s and 1s (0 means grep matched target_string in filename, 1 if not)
+    matches = list()
+    for filename in filename_matches:
+        try:
+            subprocess.check_output(['grep', target_string, filename]).decode()
+
+            # Exit code 0: match
+            matches.append(filename)
+        except subprocess.CalledProcessError:
+            # Exit code 1: no match
+            pass
+
+    return matches
 
 
 # Problem 4
@@ -29,7 +48,32 @@ def largest_files(n):
     """Return a list of the n largest files in the current directory or its
     subdirectories (from largest to smallest).
     """
-    raise NotImplementedError("Problem 4 Incomplete")
+    
+    filenames = glob('**/*.*', recursive=True)
+
+    files_sizes = dict()
+    for filename in filenames:
+        output = subprocess.check_output(['ls', '-s', filename]).decode()
+
+        # Store the size (take the characters up to the first space)
+        files_sizes[filename] = output[:output.find(' ')]
+    
+    # Get a list of the filenames sorted from largest to smallest
+    sorted_files = sorted(files_sizes, key=files_sizes.get, reverse=True)
+    
+    # Get n largest files
+    n_largest = sorted_files[:n]
+
+    # Get the line count of the smallest file (and remove the name of the file that is also output)
+    line_count_smallest = subprocess.check_output(['wc', '-l', n_largest[-1]]).decode()
+    line_count_smallest = line_count_smallest[:line_count_smallest.find(' ')]
+
+    # Write to a file the line count found above
+    with open('smallest.txt', 'w') as file:
+        file.write(line_count_smallest)
+
+    return n_largest
+    
     
 # Problem 6    
 def prob6(n = 10):
