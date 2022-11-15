@@ -1,0 +1,35 @@
+11/15/22 09:33
+
+Problem 1 (5 points):
+Score += 5
+
+Problem 2 (5 points):
+AttributeError: 'builtin_function_or_method' object has no attribute 'strip'
+
+Problem 3 (10 points):
+Score += 10
+
+Problem 4 (10 points):
+Your response:
+['Photos/IMG_2746.jpg', 'Photos/0906-13-00903.jpg', 'Photos/IMG_1595.jpg', 'Python/mult.py', 'Python/count_files.py', 'Python/fifteen_secs.py', 'Python/calc.py', 'Python/project.py', 'Scripts/organize_photos.sh', 'Scripts/log.txt']
+was not correct for largest_files(10)
+Your response:
+['Photos/IMG_2746.jpg', 'Photos/0906-13-00903.jpg', 'Photos/IMG_1595.jpg', 'Python/mult.py', 'Python/count_files.py', 'Python/fifteen_secs.py', 'Python/calc.py']
+was not correct for largest_files(7)
+Score += 2
+
+Problem 5 (5 points):
+File 'hubble_image.jpg' not found
+Score += 3
+
+Problem 6 (10 points):
+File content did not match!
+Score += 0
+
+Code Quality (5 points):
+Score += 5
+
+Total score: 25/50 = 50.0%
+
+-------------------------------------------------------------------------------
+
