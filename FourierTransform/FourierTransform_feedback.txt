@@ -1,0 +1,34 @@
+12/01/22 20:20
+
+Question 1 (5 points):
+Score += 5
+
+Question 2 (5 points):
+Score += 5
+
+Question 3 (5 points):
+Score += 5
+
+Question 4 (5 points):
+Make the chord 3 second long
+Score += 3
+
+Question 5 (5 points):
+Score += 0
+
+Question 6 (10 points):
+Score += 0
+
+Question 7 (5 points):
+Score += 0
+
+Question 8  (5 points):
+Score += 0
+
+Code Quality (5 points):
+Score += 5
+
+Total score: 23/50 = 46.0%
+
+-------------------------------------------------------------------------------
+
