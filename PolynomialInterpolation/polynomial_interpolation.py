@@ -1,9 +1,11 @@
 # polynomial_interpolation.py
 """Volume 2: Polynomial Interpolation.
-<Name>
-<Class>
-<Date>
+Nathan Schill
+Section 2
+Thurs. Jan. 26, 2023
 """
+
+import numpy as np
 
 
 # Problems 1 and 2
@@ -20,7 +22,7 @@ def lagrange(xint, yint, points):
     Returns:
         ((m,) ndarray): The value of the polynomial at the specified points.
     """
-    raise NotImplementedError("Problems 1 and 2 Incomplete")
+    
 
 
 # Problems 3 and 4
