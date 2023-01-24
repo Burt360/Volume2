@@ -6,6 +6,7 @@ Thurs. Jan. 26, 2023
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 # Problems 1 and 2
@@ -23,6 +24,20 @@ def lagrange(xint, yint, points):
         ((m,) ndarray): The value of the polynomial at the specified points.
     """
     
+    def Lj(j, xint, yint, points):
+        '''Evaluate L_j at points.'''
+
+        # Compute denominator
+        denom = np.product(xint[j-1] - np.delete(xint, j-1))
+        
+        # Tranpose points to column. From each point subtract
+        # each point in xint (except jth), yielding a row for each point in points.
+        # Take product along each row. Divide each entry by denom.
+        return np.product(points[:,np.newaxis] - np.delete(xint, j-1), axis=1)/denom
+
+    # Stack the n Ljs (each an array of m values where Lj was evaluated),
+    # yielding an nxm array. Sum down columns to get get m y-values of interpolation.
+    return np.sum(np.array([yint[j-1] * Lj(j, xint, yint, points) for j in range(1, len(xint)+1)]), axis=0)
 
 
 # Problems 3 and 4
@@ -43,7 +58,27 @@ class Barycentric:
             xint ((n,) ndarray): x values of interpolating points.
             yint ((n,) ndarray): y values of interpolating points.
         """
-        raise NotImplementedError("Problem 3 Incomplete")
+        
+        # Store interpolating points
+        self.xint, self.yint = xint, yint
+
+        ### Use code given on pp. 106-7 in the lab PDF
+
+        # Number of interpolating points
+        n = len(self.xint)
+        
+        # Array for storing barycentric weights
+        self.w = np.ones(n)
+
+        # Calculate the capacity of the interval
+        C = (np.max(self.xint) - np.min(self.xint)) / 4
+
+        shuffle = np.random.permutation(n-1)
+        for j in range(n):
+            temp = (self.xint[j] - np.delete(self.xint, j)) / C
+            # Randomize order of product
+            temp = temp[shuffle]
+            self.w[j] /= np.product(temp)
 
     def __call__(self, points):
         """Using the calcuated Barycentric weights, evaluate the interpolating polynomial
@@ -55,7 +90,10 @@ class Barycentric:
         Returns:
             ((m,) ndarray): Array of values where the polynomial has been computed.
         """
-        raise NotImplementedError("Problem 3 Incomplete")
+        
+        # Nudge any points found in xint to avoid division by zero
+        points[np.isin(points, self.xint)] += 0.1
+        # return [points - self.xint[j] for j in range(len(self.xint))]
 
     # Problem 4
     def add_weights(self, xint, yint):
