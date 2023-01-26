@@ -276,6 +276,8 @@ def prob7(n):
     axs[1].set_title(f'Degree-{n+1} interpolating polynomial')
 
     # Label, title, show
+    axs[0].set_ylabel('Micrograms/m$^3$')
+    axs[1].set_ylabel('Micrograms/m$^3$')
     axs[1].set_xlabel('Day')
-    plt.suptitle('2016 data and interpolating polynomial using Chebyshev extremizers')
+    plt.suptitle('2016 hourly $PM_{2.5}$ Salt Lake station data and interpolating polynomial using Chebyshev extremizers')
     plt.show()
