@@ -108,7 +108,7 @@ class GaussianQuadrature:
         return (b-a)/2 * self.basic(h)
 
 
-    # Problem 6.
+    # Problem 6
     def integrate2d(self, f, a1, b1, a2, b2):
         """Approximate the integral of the two-dimensional function f on
         the interval [a1,b1]x[a2,b2].
@@ -124,8 +124,12 @@ class GaussianQuadrature:
             (float): Approximate value of the integral.
         """
         
-        # Define g
-        g = lambda x, y: f(x,y) * self.w(x) * self.w(y)
+        # Define h and g
+        h = lambda x, y: f(
+            (b1-a1)/2 * x + (a1+b1)/2,
+            (b2-a2)/2 * y + (a2+b2)/2
+        )
+        g = lambda x, y: h(x,y) * self.inv_w(x) * self.inv_w(y)
 
         # Use (10.5) to approximate the integral
         return (b1-a1)*(b2-a2)/4 *\
