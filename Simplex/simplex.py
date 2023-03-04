@@ -36,8 +36,6 @@ class SimplexSolver(object):
 
         # Create dictionary
         self.dictionary = self._generatedictionary(c, A, b)
-
-        # print(self.dictionary)
         
 
     # Problem 2
