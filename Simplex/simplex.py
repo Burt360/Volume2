@@ -1,8 +1,8 @@
 """Volume 2: Simplex
 
-<Name>
-<Date>
-<Class>
+Nathan Schill
+Section 2
+Thurs. Mar. 9, 2023
 """
 
 import numpy as np
