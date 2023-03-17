@@ -1,9 +1,12 @@
 # cvxpy_intro.py
 """Volume 2: Intro to CVXPY.
-<Name>
-<Class>
-<Date>
+Nathan Schill
+Section 2
+Thurs. Mar. 23, 2023
 """
+
+import cvxpy as cp
+import numpy as np
 
 
 def prob1():
@@ -21,8 +24,29 @@ def prob1():
         The optimizer x (ndarray)
         The optimal value (float)
     """
-    raise NotImplementedError("Problem 1 Incomplete")
+    
+    # Init x and objective
+    x = cp.Variable(3, nonneg=True)
+    c = np.array([2, 1, 3])
+    objective = cp.Minimize(c.T @ x)
 
+    # Init constraint matrices
+    G = np.array([[1, 2,  0],
+                  [0, 1, -4]])
+    h = np.array([3, 1])
+
+    P = np.array([2, 10, 3])
+    q = 12
+
+    # Init problem
+    constraints = [G@x <= h, P@x >= q]
+    problem = cp.Problem(objective, constraints)
+
+    # Solve
+    soln = problem.solve()
+
+    return soln, x.value
+    
 
 # Problem 2
 def l1Min(A, b):
@@ -39,7 +63,19 @@ def l1Min(A, b):
         The optimizer x (ndarray)
         The optimal value (float)
     """
-    raise NotImplementedError("Problem 2 Incomplete")
+    
+    # Init x and objective
+    x = cp.Variable(4, nonneg=True)
+    objective = cp.Minimize(cp.norm(x, 1))
+
+    # Init problem
+    constraints = [A@x == b]
+    problem = cp.Problem(objective, constraints)
+
+    # Solve
+    soln = problem.solve()
+
+    return soln, x.value
 
 
 # Problem 3
@@ -51,7 +87,31 @@ def prob3():
         The optimizer x (ndarray)
         The optimal value (float)
     """
-    raise NotImplementedError("Problem 3 Incomplete")
+    
+    # Init p and objective (cost along each route)
+    p = cp.Variable(6, nonneg=True)
+    c = np.array([4, 7, 6, 8, 8, 9])
+    objective = cp.Minimize(c.T @ p)
+
+    # Supply constraints (one cap for each supply center)
+    supply_mat = np.array([[1, 1, 0, 0, 0, 0],
+                           [0, 0, 1, 1, 0, 0],
+                           [0, 0, 0, 0, 1, 1]])
+    supply = np.array([7, 2, 4])
+
+    # Demand requirements
+    demand_mat = np.array([[1, 0, 1, 0, 1, 0],
+                           [0, 1, 0, 1, 0, 1]])
+    demand = np.array([5, 8])
+
+    # Init problem
+    constraints = [supply_mat @ p <= supply, demand_mat @ p == demand]
+    problem = cp.Problem(objective, constraints)
+
+    # Solve
+    soln = problem.solve()
+
+    return soln, p.value
 
 
 # Problem 4
@@ -64,7 +124,22 @@ def prob4():
         The optimizer x (ndarray)
         The optimal value (float)
     """
-    raise NotImplementedError("Problem 4 Incomplete")
+    
+    # Init x and objective
+    x = cp.Variable(3)
+    Q = np.array([[3,2,1],
+                  [2,4,2],
+                  [1,2,3]])
+    r = np.array([3,0,1])
+    objective = cp.Minimize(0.5 * cp.quad_form(x, Q) + r.T@x)
+
+    # Init problem
+    problem = cp.Problem(objective)
+
+    # Solve
+    soln = problem.solve()
+
+    return soln, x.value
 
 
 # Problem 5
@@ -81,7 +156,22 @@ def prob5(A, b):
         The optimizer x (ndarray)
         The optimal value (float)
     """
-    raise NotImplementedError("Problem 5 Incomplete")
+
+    m, n = A.shape
+    
+    # Init x and objective
+    x = cp.Variable(n, nonneg=True)
+    objective = cp.Minimize(cp.norm(A@x - b, 2))
+
+    # Init problem
+    # |x| = 1 is the same as two inequalities with one flipped
+    constraints = [cp.norm(x, 1) <= 1, -cp.norm(x, 1) >= -1]
+    problem = cp.Problem(objective, constraints)
+
+    # Solve
+    soln = problem.solve()
+
+    return soln, x.value
 
 
 # Problem 6
@@ -96,4 +186,29 @@ def prob6():
         The optimizer x (ndarray)
         The optimal value (float)
     """	 
-    raise NotImplementedError("Problem 6 Incomplete")
+    
+    # Load data
+    data = np.load('food.npy', allow_pickle=True).T
+
+    # Init x and objective
+    x = cp.Variable(18, nonneg=True)
+    p = data[0]
+    objective = cp.Minimize(p.T @ x)
+
+    # Less than constraints (2-4)
+    less_than_constraints = data[2:5]
+    less_than_vector = [2000, 65, 50]
+    
+    # Greater than constraints (5-7)
+    greater_than_constraints = data[5:8]
+    greater_than_vector = [1000, 25, 46]
+
+    # Init problem
+    constraints = [less_than_constraints @ x <= less_than_vector,
+                   greater_than_constraints @ x >= greater_than_vector]
+    problem = cp.Problem(objective, constraints)
+
+    # Solve
+    soln = problem.solve()
+
+    return soln, x.value
