@@ -164,8 +164,8 @@ def prob5(A, b):
     objective = cp.Minimize(cp.norm(A@x - b, 2))
 
     # Init problem
-    # |x| = 1 is the same as two inequalities with one flipped
-    constraints = [cp.norm(x, 1) <= 1, -cp.norm(x, 1) >= -1]
+    # |x| = 1 is just the sum since x has non-negative entries
+    constraints = [cp.sum(x) == 1]
     problem = cp.Problem(objective, constraints)
 
     # Solve
