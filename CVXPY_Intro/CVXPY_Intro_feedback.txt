@@ -4,3 +4,88 @@ cvxpy_intro.py has not been modified yet
 
 -------------------------------------------------------------------------------
 
+03/21/23 09:49
+
+Problem 1 (5 points):
+Incorrect optimizer
+	Correct response: [0.    1.186 0.047]
+	Student response: 1.3255813953521967
+Incorrect optimial value
+	Correct response: 1.3255813953521967
+	Student response: [0.    1.186 0.047]
+Score += 0
+
+Problem 2 (5 points):
+ValueError: Incompatible dimensions (5, 5) (4, 1)
+
+Problem 3 (5 points):
+Incorrect optimizer
+	Correct response: [5. 2. 0. 2. 0. 4.]
+	Student response: 86.00000000027515
+Incorrect optimial value
+	Correct response: 86.00000000262983
+	Student response: [5. 2. 0. 2. 0. 4.]
+Score += 0
+
+Problem 4 (5 points):
+Incorrect optimizer
+	Correct response: [-1.5  1.  -0.5]
+	Student response: -2.5
+Incorrect optimial value
+	Correct response: -2.5
+	Student response: [-1.5  1.  -0.5]
+Score += 0
+
+Problem 5 (10 points):
+Incorrect optimizer
+	Correct response: [0.2   0.331 0.019 0.225 0.225]
+	Student response: 1.6464792346677832
+Incorrect optimial value
+	Correct response: 1.6464792346677832
+	Student response: [0.2   0.331 0.019 0.225 0.225]
+	A =
+[[0.462 1.778 4.125 4.956 2.819]
+ [0.757 1.025 0.466 4.669 1.912]
+ [2.096 2.313 0.259 2.744 3.924]
+ [3.84  0.882 0.041 2.78  0.003]
+ [1.675 3.089 0.996 0.114 1.251]],
+
+	b =
+[1.545 2.871 2.017 1.088 1.263]
+
+Incorrect optimizer
+	Correct response: [0.582 0.    0.    0.    0.    0.    0.155 0.263 0.    0.   ]
+	Student response: 3.2999845783921398
+Incorrect optimial value
+	Correct response: 3.2999845783921398
+	Student response: [0.582 0.    0.    0.    0.    0.    0.155 0.263 0.    0.   ]
+	A =
+[[1.161 1.686 0.709 2.638 1.144 2.305 1.851 1.299 2.998 1.544]
+ [4.525 1.313 3.763 1.607 3.691 0.62  0.904 1.112 0.026 1.438]
+ [0.266 0.243 3.094 4.915 4.08  1.254 3.015 4.324 3.17  2.369]
+ [3.953 3.906 2.233 0.509 3.295 1.464 1.483 4.375 0.245 3.484]
+ [0.817 1.343 0.827 0.123 1.561 3.2   4.423 4.552 1.124 3.191]],
+
+	b =
+[3.167 4.375 0.799 4.282 4.462]
+
+Score += 0
+
+Problem 6 (15 points):
+Incorrect optimizer
+	Correct response: [ 0.     3.623  0.2    0.     0.     0.     0.     0.     0.     0.
+  0.     0.003  0.     0.    -0.     0.     0.     0.   ]
+	Student response: 7.516734329083967
+Incorrect optimial value
+	Correct response: 2.103276875206494
+	Student response: [0.    3.623 3.2   0.    0.    0.    0.    0.    0.    0.    0.    0.026
+ 0.    0.    0.    0.    0.    0.   ]
+Score += 0
+
+Code Quality (5 points):
+Score += 5
+
+Total score: 5/50 = 10.0%
+
+-------------------------------------------------------------------------------
+
