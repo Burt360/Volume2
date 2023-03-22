@@ -45,7 +45,7 @@ def prob1():
     # Solve
     soln = problem.solve()
 
-    return soln, x.value
+    return x.value, soln
     
 
 # Problem 2
@@ -64,8 +64,10 @@ def l1Min(A, b):
         The optimal value (float)
     """
     
+    m, n = A.shape
+
     # Init x and objective
-    x = cp.Variable(4, nonneg=True)
+    x = cp.Variable(n, nonneg=True)
     objective = cp.Minimize(cp.norm(x, 1))
 
     # Init problem
@@ -75,7 +77,7 @@ def l1Min(A, b):
     # Solve
     soln = problem.solve()
 
-    return soln, x.value
+    return x.value, soln
 
 
 # Problem 3
@@ -84,7 +86,7 @@ def prob3():
     into inequality constraints.
 
     Returns (in order):
-        The optimizer x (ndarray)
+        The optimizer p (ndarray)
         The optimal value (float)
     """
     
@@ -111,7 +113,7 @@ def prob3():
     # Solve
     soln = problem.solve()
 
-    return soln, p.value
+    return p.value, soln
 
 
 # Problem 4
@@ -139,7 +141,7 @@ def prob4():
     # Solve
     soln = problem.solve()
 
-    return soln, x.value
+    return x.value, soln
 
 
 # Problem 5
@@ -171,7 +173,7 @@ def prob5(A, b):
     # Solve
     soln = problem.solve()
 
-    return soln, x.value
+    return x.value, soln
 
 
 # Problem 6
@@ -195,12 +197,12 @@ def prob6():
     p = data[0]
     objective = cp.Minimize(p.T @ x)
 
-    # Less than constraints (2-4)
-    less_than_constraints = data[2:5]
+    # Less than constraints (2-4) multiplied by number of servings
+    less_than_constraints = data[2:5] * data[1]
     less_than_vector = [2000, 65, 50]
     
-    # Greater than constraints (5-7)
-    greater_than_constraints = data[5:8]
+    # Greater than constraints (5-7) multiplied by number of servings
+    greater_than_constraints = data[5:8] * data[1]
     greater_than_vector = [1000, 25, 46]
 
     # Init problem
@@ -211,4 +213,4 @@ def prob6():
     # Solve
     soln = problem.solve()
 
-    return soln, x.value
+    return x.value, soln
