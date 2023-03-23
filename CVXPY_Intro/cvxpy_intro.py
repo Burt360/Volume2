@@ -67,7 +67,7 @@ def l1Min(A, b):
     m, n = A.shape
 
     # Init x and objective
-    x = cp.Variable(n, nonneg=True)
+    x = cp.Variable(n)
     objective = cp.Minimize(cp.norm(x, 1))
 
     # Init problem
