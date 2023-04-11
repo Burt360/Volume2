@@ -54,15 +54,22 @@ def graph_stopping_times(M):
     
     N = np.arange(3, M+1)
     
-    # Calculate stopping percentages and plot
-    optimal_stopping_percentages = np.array([calc_stopping(n)[1]/n for n in N])
+    # Calculate solutions
+    solns = np.array([calc_stopping(n) for n in N])
+
+    # Optimal stopping percentages
+    optimal_stopping_percentages = np.array([soln[1] for soln in solns])/N # np.array([calc_stopping(n)[1]/n for n in N])
     plt.plot(N, optimal_stopping_percentages, label='Optimal stopping percentage')
+    
+    # Maximum probabilities
+    max_probs = np.array([soln[0] for soln in solns])
+    plt.plot(N, max_probs, label='Maximum probability')
 
     # Plot properties
     plt.xlabel('$N$')
     plt.ylabel('%')
     plt.legend()
-    plt.tight_layout()
+    plt.title('The Marriage Problem')
     plt.show()
 
     return optimal_stopping_percentages[-1]
