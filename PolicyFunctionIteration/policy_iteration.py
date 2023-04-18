@@ -293,9 +293,12 @@ def run_simulation(env, policy, render=False, beta=1.0):
     obs = env.reset()
 
     done = False
+    i = -1
     while not done:
         # Take a step in the optimal direction and update variables
         obs, reward, done, _, _ = env.step(int(policy[obs]))
 
+        i += 1
+
     # When done, the reward is either 1 for success or 0 for failure
-    return reward
+    return beta**i * reward
