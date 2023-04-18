@@ -35,7 +35,7 @@ P[3][2] = [(0, 0, 0, True)]
 P[3][3] = [(0, 0, 0, True)]
 
 
-# Problem 1
+## Problem 1
 def value_iteration(P, nS, nA, beta=1, tol=1e-8, maxiter=3000):
     """Perform Value Iteration according to the Bellman optimality principle.
 
@@ -73,7 +73,7 @@ def value_iteration(P, nS, nA, beta=1, tol=1e-8, maxiter=3000):
                     p, s_, u, _ = tuple_info
 
                     # Sum up the possible end states and rewards with given action
-                    sa_vector[a] += (p * (u + beta * v_old[s_]))
+                    sa_vector[a] += p * (u + beta * v_old[s_])
             
             # Add the max value to the value function
             v_new[s] = np.max(sa_vector)
@@ -105,7 +105,7 @@ def extract_policy(P, nS, nA, v, beta=1.0):
     """
     
     # Policy vector
-    c = np.empty(nS)
+    c = np.empty(nS, dtype=int)
 
     # Iterate through states
     for s in range(nS):
@@ -121,7 +121,7 @@ def extract_policy(P, nS, nA, v, beta=1.0):
                 p, s_, u, _ = tuple_info
 
                 # Sum up the possible end states and rewards with given action
-                sa_vector[a] += (p * (u + beta * v[s_]))
+                sa_vector[a] += p * (u + beta * v[s_])
         
         # Record the argmax in the policy
         c[s] = np.argmax(sa_vector)
@@ -184,7 +184,7 @@ def compute_policy_v(P, nS, nA, policy, beta=1.0, tol=1e-8, maxiter=3000):
         # Set new v_old
         v_old = np.copy(v_new)
 
-    return v_new, i
+    return v_new
 
 
 # Problem 4
@@ -206,15 +206,12 @@ def policy_iteration(P, nS, nA, beta=1, tol=1e-8, maxiter=200):
         n (int): number of iterations
     """
     
-    # Init policy
-    # p0 = [0] + [None] * (nS-1)
-    # for s in range(1, nS):
-    #     p0[s] = s-1
-    p0 = np.zeros(nS)
+    # Init random policy
+    p0 = np.random.choice(nA, size=nS)
     p1 = p0.copy()
     
-    for _ in range(maxiter):
-        v = compute_policy_v(P, nS, nA, p0)[0]
+    for i in range(maxiter):
+        v = compute_policy_v(P, nS, nA, p0)
         p1 = extract_policy(P, nS, nA, v)
 
         # Check tolerance
@@ -223,7 +220,7 @@ def policy_iteration(P, nS, nA, beta=1, tol=1e-8, maxiter=200):
         
         p0 = p1.copy()
 
-    return v, p0
+    return v, p0, i
 
 
 # Problem 5 and 6
@@ -250,7 +247,7 @@ def frozen_lake(basic_case=True, M=1000, render=False):
         # Make environment for 8x8 scenario
         env_name = 'FrozenLake8x8-v1'
     
-    env = gym.make(env_name).env
+    env = gym.make(env_name, new_step_api=True).env
 
     # Find number of states and actions
     nS = env.observation_space.n
@@ -265,7 +262,7 @@ def frozen_lake(basic_case=True, M=1000, render=False):
 
     # Policy iteration
     (pi_value_func, pi_policy) = policy_iteration(P, nS, nA)[:2]
-
+    
     # Render once with value iteration's policy and once with policy iteration's policy
     if render:
         run_simulation(env, vi_policy, True)
@@ -299,16 +296,11 @@ def run_simulation(env, policy, render=False, beta=1.0):
     
     # Put environment in starting state
     obs = env.reset()
-    
-    if render:
-        pass
-        # TODO: This doesn't work on Colab
-        # env.render(mode='human')
 
     done = False
     while not done:
         # Take a step in the optimal direction and update variables
-        obs, reward, done, _ = env.step(int(policy[obs]))
+        obs, reward, done, _, _ = env.step(int(policy[obs]))
 
     # When done, the reward is either 1 for success or 0 for failure
     return reward
