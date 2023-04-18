@@ -85,7 +85,7 @@ def value_iteration(P, nS, nA, beta=1, tol=1e-8, maxiter=3000):
         # Set new v_old
         v_old = np.copy(v_new)
 
-    return v_new, i
+    return v_new, i+1
 
 
 # Problem 2
