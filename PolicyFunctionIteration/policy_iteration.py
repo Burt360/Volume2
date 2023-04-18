@@ -161,11 +161,6 @@ def compute_policy_v(P, nS, nA, policy, beta=1.0, tol=1e-8, maxiter=3000):
             sa_value = 0
             
             # Iterate through possible next states for given action
-            try:
-                P[s][a]
-            except:
-                print(a)
-                print(policy)
             for tuple_info in P[s][a]:
 
                 # tuple_info is a tuple of (probability, next state, reward, done)
@@ -247,7 +242,7 @@ def frozen_lake(basic_case=True, M=1000, render=False):
         # Make environment for 8x8 scenario
         env_name = 'FrozenLake8x8-v1'
     
-    env = gym.make(env_name, new_step_api=True).env
+    env = gym.make(env_name).env
 
     # Find number of states and actions
     nS = env.observation_space.n
