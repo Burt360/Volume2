@@ -12,41 +12,6 @@ UnixShell2/Shell2/
 *.wav
 *.pdf
 
-# Lab data files --------------------------------------------------------------
-BinaryTrees/english.txt
-BreadthFirstSearch/movie_data.txt
-BreadthFirstSearch/movie_data_small.txt
-CVXPY_Intro/food.npy
-Exceptions_FileIO/hello_world.txt
-Exceptions_FileIO/cf_example1.txt
-Exceptions_FileIO/cf_example2.txt
-FourierTransform/tada.wav
-FourierTransform/mystery_chord.wav
-FourierTransform/CGC.wav
-FourierTransform/GCG.wav
-FourierTransform/balloon.wav
-FourierTransform/chopin.wav
-FourierTransform/noisy1.wav
-FourierTransform/noisy2.wav
-FourierTransform/vuvuzela.wav
-FourierTransform/noisy_face.png
-FourierTransform/license_plate.png
-GradientMethods/linregression.txt
-GradientMethods/challenger.npy
-InteriorPoint_Linear/simdata.txt
-LinkedLists/english.txt
-MarkovChains/yoda.txt
-NMF/faces94.zip
-NearestNeighbor/mnist_subset.npz
-PolynomialInterpolation/airdata.npy
-RegularExpressions/fake_contacts.txt
-Simplex/productMix.npz
-UnixShell2/Shell2.zip
-Wavelets/mandrill.png
-Wavelets/woman_darkhair.png
-Wavelets/noisy_darkhair.png
-Wavelets/uncompressed_finger.png
-
 # General Files ---------------------------------------------------------------
 
 # Extra Python files.
