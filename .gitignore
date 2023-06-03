@@ -1,12 +1,18 @@
-# Nathan's extra files --------------------------------------------------------
-HW_files/
-MatplotlibIntro/matplotlib_intro.ipynb
-MatplotlibIntro/spec_matplotlib_intro.py
-NumpyIntro/spec_numpy_intro.py
-PythonIntro/spec_python_intro.py
+UnixShell2/Shell2/
+
+# Data files
+*.txt
+*.npy
+*.npz
+*.zip
+*.png
+*.jpg
+*.csv
+*.db
+*.wav
+*.pdf
 
 # Lab data files --------------------------------------------------------------
-
 BinaryTrees/english.txt
 BreadthFirstSearch/movie_data.txt
 BreadthFirstSearch/movie_data_small.txt
